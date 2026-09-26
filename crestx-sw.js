@@ -1,12 +1,15 @@
-const CACHE_NAME = "crestx-shell-v6-icons";
+const CACHE_NAME = "crestx-shell-v8-icons";
+const CACHE_PREFIX = "crestx-shell-";
+const ICON_VERSION = "?v=crestx-2026-09-26-2";
 const APP_SHELL = [
-  "./",
-  "./index.html",
-  "./crestx-manifest.webmanifest",
-  "./crestx-icon-180.png",
-  "./crestx-icon-192.png",
-  "./crestx-icon-512.png"
+  new URL("./", self.registration.scope).href,
+  new URL("./index.html", self.registration.scope).href,
+  new URL("./crestx-manifest.webmanifest" + ICON_VERSION, self.registration.scope).href,
+  new URL("./crestx-icon-180.png" + ICON_VERSION, self.registration.scope).href,
+  new URL("./crestx-icon-192.png" + ICON_VERSION, self.registration.scope).href,
+  new URL("./crestx-icon-512.png" + ICON_VERSION, self.registration.scope).href
 ];
+const INDEX_URL = new URL("./index.html", self.registration.scope).href;
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -18,14 +21,20 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
+      caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((key) => key !== CACHE_NAME)
+          .filter((key) => key.startsWith(CACHE_PREFIX) && key !== CACHE_NAME)
           .map((key) => caches.delete(key))
       )
     ).then(() => self.clients.claim())
   );
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener("fetch", (event) => {
@@ -43,13 +52,14 @@ self.addEventListener("fetch", (event) => {
           }
           return response;
         })
-        .catch(() => caches.match(event.request).then((cached) => cached || caches.match("./index.html")))
+        .catch(() => caches.match(event.request).then((cached) => cached || caches.match(INDEX_URL)))
     );
     return;
   }
 
+  const isBrandIcon = /^crestx-icon-\d+\.png$/i.test(requestUrl.pathname.split("/").pop() || "");
   event.respondWith(
-    fetch(event.request)
+    fetch(event.request, isBrandIcon ? { cache: "reload" } : undefined)
       .then((response) => {
         if (response && response.ok) {
           const copy = response.clone();

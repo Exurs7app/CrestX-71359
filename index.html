@@ -11,6 +11,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="CrestX" />
+<meta name="msapplication-TileColor" content="#071332" />
+<meta name="msapplication-TileImage" content="./crestx-icon-192.png?v=crestx-2026-09-26-2" />
 <script>
   (function () {
     var brandPattern = /ExOriX/gi;
@@ -20,10 +22,7 @@
     function normalizeAttribute(value, attribute) {
       if (typeof value !== 'string') return value;
       if (attribute === 'src' || attribute === 'href') {
-        return value
-          .replace('./exorix-manifest.webmanifest', './crestx-manifest.webmanifest')
-          .replace('./exorix-icon-', './crestx-icon-')
-          .replace('./exorix-sw.js', './crestx-sw.js');
+        return value;
       }
       if (attribute === 'onclick') {
         return value
@@ -79,11 +78,42 @@
     }
   })();
 </script>
-<link rel="manifest" href="./crestx-manifest.webmanifest" />
-<link rel="icon" type="image/png" sizes="512x512" href="./crestx-icon-512.png" />
-<link rel="icon" type="image/png" sizes="192x192" href="./crestx-icon-192.png" />
-<link rel="apple-touch-icon" sizes="180x180" href="./crestx-icon-180.png" />
-<link rel="apple-touch-icon-precomposed" sizes="180x180" href="./crestx-icon-180.png" />
+<script>
+  /* Keep dynamically rendered brand icons on the current icon version. */
+  (function () {
+    var iconVersion = '?v=crestx-2026-09-26-2';
+    function refreshBrandIcons(root) {
+      if (!root || !root.querySelectorAll) return;
+      root.querySelectorAll('img[src^="./crestx-icon-"]').forEach(function (image) {
+        var source = image.getAttribute('src') || '';
+        if (source.indexOf(iconVersion) === -1) {
+          image.setAttribute('src', source.split('?')[0] + iconVersion);
+        }
+      });
+    }
+    function start() {
+      refreshBrandIcons(document);
+      if (typeof MutationObserver !== 'undefined') {
+        new MutationObserver(function (mutations) {
+          mutations.forEach(function (mutation) {
+            Array.prototype.slice.call(mutation.addedNodes).forEach(refreshBrandIcons);
+          });
+        }).observe(document.documentElement, { childList: true, subtree: true });
+      }
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', start, { once: true });
+    } else {
+      start();
+    }
+  })();
+</script>
+<link rel="manifest" href="./crestx-manifest.webmanifest?v=crestx-2026-09-26-2" />
+<link rel="icon" type="image/png" sizes="512x512" href="./crestx-icon-512.png?v=crestx-2026-09-26-2" />
+<link rel="icon" type="image/png" sizes="192x192" href="./crestx-icon-192.png?v=crestx-2026-09-26-2" />
+<link rel="shortcut icon" type="image/png" href="./crestx-icon-192.png?v=crestx-2026-09-26-2" />
+<link rel="apple-touch-icon" sizes="180x180" href="./crestx-icon-180.png?v=crestx-2026-09-26-2" />
+<link rel="apple-touch-icon-precomposed" sizes="180x180" href="./crestx-icon-180.png?v=crestx-2026-09-26-2" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -4806,7 +4836,7 @@
     <button class="auth-language-shortcut" type="button" aria-label="Language" title="Language" onclick="openAuthLanguageMenu(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z"/></svg>
     </button>
-    <button class="auth-install-shortcut" type="button" aria-label="Install ExOriX" title="Install ExOriX" onclick="openSettingsModal('install')">
+    <button class="auth-install-shortcut" type="button" aria-label="Install CrestX" title="Install CrestX" onclick="openSettingsModal('install')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
     </button>
     <div class="brand">
@@ -4842,7 +4872,7 @@
     <button class="auth-language-shortcut" type="button" aria-label="Language" title="Language" onclick="openAuthLanguageMenu(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z"/></svg>
     </button>
-    <button class="auth-install-shortcut" type="button" aria-label="Install ExOriX" title="Install ExOriX" onclick="openSettingsModal('install')">
+    <button class="auth-install-shortcut" type="button" aria-label="Install CrestX" title="Install CrestX" onclick="openSettingsModal('install')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
     </button>
     <form class="auth-form" id="login-form" novalidate>
@@ -4901,7 +4931,7 @@
     <button class="auth-language-shortcut" type="button" aria-label="Language" title="Language" onclick="openAuthLanguageMenu(event)">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.4 2.5 3.6 5.5 3.6 9S14.4 18.5 12 21c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3Z"/></svg>
     </button>
-    <button class="auth-install-shortcut" type="button" aria-label="Install ExOriX" title="Install ExOriX" onclick="openSettingsModal('install')">
+    <button class="auth-install-shortcut" type="button" aria-label="Install CrestX" title="Install CrestX" onclick="openSettingsModal('install')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>
     </button>
     <form class="auth-form" id="signup-form" novalidate>
@@ -6435,12 +6465,12 @@
     </div></section>
 
      <section class="set-section"><p class="set-section-head">Application</p><div class="set-group glass">
-        <button class="set-row" onclick="openSettingsModal('install')"><span class="set-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></span><span class="set-row-copy"><strong>Install ExOriX</strong><small>Add ExOriX to your device for quick access</small></span><span class="set-value" id="set-install-row-status">Not installed</span><svg class="set-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+        <button class="set-row" onclick="openSettingsModal('install')"><span class="set-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg></span><span class="set-row-copy"><strong>Install CrestX</strong><small>Add CrestX to your device for quick access</small></span><span class="set-value" id="set-install-row-status">Not installed</span><svg class="set-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
      </div></section>
 
     <section class="set-section"><p class="set-section-head">Support</p><div class="set-group glass">
        <button class="set-row" onclick="openSettingsModal('support')"><span class="set-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span class="set-row-copy"><strong>Help center & live chat</strong><small>Support is online · replies in ~30s</small></span><svg class="set-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
-       <button class="set-row" onclick="openSettingsModal('about')"><span class="set-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span><span class="set-row-copy"><strong>About ExOriX</strong><small>Legal, privacy and application info</small></span><svg class="set-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
+       <button class="set-row" onclick="openSettingsModal('about')"><span class="set-row-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg></span><span class="set-row-copy"><strong>About CrestX</strong><small>Legal, privacy and application info</small></span><svg class="set-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 18 6-6-6-6"/></svg></button>
     </div></section>
 
     <button type="button" class="set-signout" onclick="settingsSignOut()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/></svg>Sign out securely</button>
@@ -13304,7 +13334,7 @@
       if(type==='about'){ title.textContent='About ExOriX'; content='<p class="set-help-copy"><strong style="color:var(--wallet-ink)">ExOriX Wallet</strong><br>Version 12.4.0 (Build 240829)<br><br>Your private financial workspace for managing assets, swaps and secure transfers.</p><button class="set-link-btn" onclick="openSettingsModal(\'privacy\')">Privacy policy</button><button class="set-link-btn" onclick="openSettingsModal(\'terms\')">Terms of service</button>'; }
        if(type==='privacy'){ title.textContent=uidLocalized('Privacy Policy','سياسة الخصوصية'); content='<div class="set-privacy-head"><h2 class="set-privacy-title">Privacy Policy – ExOriX</h2><span class="set-privacy-date">Updated: September 2026</span></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#128187;</span>Collected data</h4><p>We collect basic registration data (name, email, and verification data), as well as technical data and activity logs to ensure service stability and transaction security.</p></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#128273;</span>Data use</h4><p>Your data is used solely to operate your account, process transactions, and protect the platform against fraud.</p></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#128272;</span>Confidentiality and security</h4><p>We apply strong encryption to protect your data. We do not sell or share your personal information with third parties for marketing purposes.</p></div><p class="set-help-copy" style="margin-top:14px; text-align:center;">We place the highest importance on the privacy of your data and your digital security at ExOriX.</p>'; }
        if(type==='terms'){ title.textContent=uidLocalized('Terms of Service','شروط الخدمة'); content='<div class="set-privacy-head"><h2 class="set-privacy-title">Terms of Service – ExOriX</h2><span class="set-privacy-date">Updated: September 2026</span></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#128221;</span>Acceptance of terms</h4><p>By using the ExOriX platform, you agree to comply with these terms, including all rules and policies associated with the service. Please read the terms carefully before getting started.</p></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#128100;</span>User obligations</h4><p>You agree to provide accurate information during registration, keep your login details confidential, and not share them with anyone else. You are responsible for all activity on your account.</p></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#9940;</span>Prohibited uses</h4><p>Using the platform for illegal or fraudulent purposes, or in ways that harm the system or other users, is prohibited. We reserve the right to suspend or terminate accounts that violate these terms.</p></div><div class="set-privacy-card"><h4><span class="set-privacy-icon">&#128736;</span>Liability and changes</h4><p>ExOriX is not responsible for losses resulting from unauthorized use of your account. We may update these terms from time to time, and any material change will be announced through the app.</p></div><p class="set-help-copy" style="margin-top:14px; text-align:center;">For legal inquiries, please contact the support team through the Help Center.</p>'; }
-       if(type==='install'){ title.textContent='Install ExOriX'; content='<div class="set-download-hero"><div class="set-download-brand"><span class="set-download-mark" aria-hidden="true"><img src="./exorix-icon-512.png" alt="ExOriX" /></span><span class="set-download-copy"><strong>Install ExOriX</strong><small>Add ExOriX to your device for a faster, secure experience.</small></span></div><div class="set-download-platforms"><span>Android · Google Chrome</span><span>iPhone · Safari</span><span>Windows · Google Chrome</span><span>macOS · Safari</span></div></div><div class="set-install-state" id="set-install-state" data-state="unavailable"><span class="set-install-state-icon" id="set-install-state-icon" aria-hidden="true">•</span><span class="set-install-state-copy"><strong id="set-install-state-title">Not installed</strong><small id="set-install-state-copy">Real app installation requires secure app setup.</small></span></div><div class="set-download-actions"><button type="button" class="set-download-primary" id="set-install-app" onclick="requestAppInstall()">Install on this device</button></div><p class="set-install-status" id="set-install-status" role="status" aria-live="polite"></p><section class="set-ios-install-guide" id="set-ios-install-guide" hidden></section>'; }
+     if(type==='install'){ title.textContent='Install CrestX'; content='<div class="set-download-hero"><div class="set-download-brand"><span class="set-download-mark" aria-hidden="true"><img src="./crestx-icon-512.png" alt="CrestX" /></span><span class="set-download-copy"><strong>Install CrestX</strong><small>Add CrestX to your device for a faster, secure experience.</small></span></div><div class="set-download-platforms"><span>Android · Google Chrome</span><span>iPhone · Safari</span><span>Windows · Google Chrome</span><span>macOS · Safari</span></div></div><div class="set-install-state" id="set-install-state" data-state="unavailable"><span class="set-install-state-icon" id="set-install-state-icon" aria-hidden="true">•</span><span class="set-install-state-copy"><strong id="set-install-state-title">Not installed</strong><small id="set-install-state-copy">Real app installation requires secure app setup.</small></span></div><div class="set-download-actions"><button type="button" class="set-download-primary" id="set-install-app" onclick="requestAppInstall()">Install on this device</button></div><p class="set-install-status" id="set-install-status" role="status" aria-live="polite"></p><section class="set-ios-install-guide" id="set-ios-install-guide" hidden></section>'; }
        body.innerHTML=content; body.setAttribute('data-settings-type',type); modal.classList.toggle('devices-fullscreen',type==='devices'); modal.classList.add('open'); document.body.style.overflow='hidden';
        if(type==='devices'){ collectDeviceDetails(renderDeviceSession); }
       if(type==='preferences'){document.getElementById('set-edit-language').value=normalizeLanguage(APP_SETTINGS.language);document.getElementById('set-edit-currency').value=APP_SETTINGS.currency;renderLanguageChooser();applyLanguage();}
@@ -13331,8 +13361,8 @@
       var guide=document.getElementById('set-ios-install-guide');if(!guide)return;
       var ios=appIsIOS();guide.hidden=!ios;if(!ios)return;
       guide.innerHTML=appInstallText(
-        '<div class="set-ios-guide-heading"><span class="set-ios-guide-icon"><img src="./exorix-icon-180.png" alt="ExOriX" /></span><span><strong>Install ExOriX on iPhone</strong><small>Use Safari to add ExOriX to your Home Screen.</small></span></div><ol class="set-ios-guide-steps"><li>Open this website in Safari, not inside another app.</li><li>Tap Safari’s Share button.</li><li>Choose “Add to Home Screen”.</li><li>Tap “Add”, then open ExOriX from the new icon.</li></ol><p class="set-ios-guide-tip">iPhone does not support the Android install prompt. The Safari “Add to Home Screen” action is the official installation method.</p>',
-        '<div class="set-ios-guide-heading"><span class="set-ios-guide-icon"><img src="./exorix-icon-180.png" alt="ExOriX" /></span><span><strong>تثبيت ExOriX على iPhone</strong><small>استخدم Safari لإضافة ExOriX إلى الشاشة الرئيسية.</small></span></div><ol class="set-ios-guide-steps"><li>افتح هذا الموقع في متصفح Safari وليس داخل تطبيق آخر.</li><li>اضغط زر المشاركة في Safari.</li><li>اختر «إضافة إلى الشاشة الرئيسية».</li><li>اضغط «إضافة»، ثم افتح ExOriX من الأيقونة الجديدة.</li></ol><p class="set-ios-guide-tip">لا يدعم iPhone نافذة تثبيت Android. الطريقة الرسمية هي اختيار «إضافة إلى الشاشة الرئيسية» من Safari.</p>'
+         '<div class="set-ios-guide-heading"><span class="set-ios-guide-icon"><img src="./crestx-icon-180.png" alt="CrestX" /></span><span><strong>Install CrestX on iPhone</strong><small>Use Safari to add CrestX to your Home Screen.</small></span></div><ol class="set-ios-guide-steps"><li>Open this website in Safari, not inside another app.</li><li>Tap Safari’s Share button.</li><li>Choose “Add to Home Screen”.</li><li>Tap “Add”, then open CrestX from the new icon.</li></ol><p class="set-ios-guide-tip">iPhone does not support the Android install prompt. The Safari “Add to Home Screen” action is the official installation method.</p>',
+         '<div class="set-ios-guide-heading"><span class="set-ios-guide-icon"><img src="./crestx-icon-180.png" alt="CrestX" /></span><span><strong>تثبيت CrestX على iPhone</strong><small>استخدم Safari لإضافة CrestX إلى الشاشة الرئيسية.</small></span></div><ol class="set-ios-guide-steps"><li>افتح هذا الموقع في متصفح Safari وليس داخل تطبيق آخر.</li><li>اضغط زر المشاركة في Safari.</li><li>اختر «إضافة إلى الشاشة الرئيسية».</li><li>اضغط «إضافة»، ثم افتح CrestX من الأيقونة الجديدة.</li></ol><p class="set-ios-guide-tip">لا يدعم iPhone نافذة تثبيت Android. الطريقة الرسمية هي اختيار «إضافة إلى الشاشة الرئيسية» من Safari.</p>'
       );
     }
     function renderAndroidInstallGuide(){
@@ -13350,7 +13380,7 @@
       if(!button||!status||!state)return;
       renderIOSInstallGuide();
       if(installed){state.setAttribute('data-state','installed');if(icon)icon.textContent='✓';if(title)title.textContent=appInstallText('Installed','مثبت');if(copy)copy.textContent=appInstallText('Installed on this device','مثبت على هذا الجهاز');button.disabled=true;button.textContent=appInstallText('Installed','مثبت');status.textContent=appInstallText('ExOriX is already installed on this device.','تم تثبيت ExOriX على هذا الجهاز بالفعل.');return;}
-      if(appIsIOS()){state.setAttribute('data-state','ios');if(icon)icon.innerHTML='<img src="./exorix-icon-180.png" alt="ExOriX" />';if(title)title.textContent=appInstallText('Install on iPhone','التثبيت على iPhone');if(copy)copy.textContent=appInstallText('Use Safari Share, then add ExOriX to your Home Screen.','استخدم زر المشاركة في Safari، ثم أضف ExOriX إلى الشاشة الرئيسية.');button.disabled=false;button.textContent=appInstallText('View iPhone install steps','عرض خطوات تثبيت iPhone');status.textContent=appInstallText('Follow the steps below to install ExOriX.','اتبع الخطوات أدناه لتثبيت ExOriX.');return;}
+       if(appIsIOS()){state.setAttribute('data-state','ios');if(icon)icon.innerHTML='<img src="./crestx-icon-180.png" alt="CrestX" />';if(title)title.textContent=appInstallText('Install on iPhone','التثبيت على iPhone');if(copy)copy.textContent=appInstallText('Use Safari Share, then add CrestX to your Home Screen.','استخدم زر المشاركة في Safari، ثم أضف CrestX إلى الشاشة الرئيسية.');button.disabled=false;button.textContent=appInstallText('View iPhone install steps','عرض خطوات تثبيت iPhone');status.textContent=appInstallText('Follow the steps below to install CrestX.','اتبع الخطوات أدناه لتثبيت CrestX.');return;}
       if(APP_INSTALL_PROMPT){state.setAttribute('data-state','ready');if(icon)icon.textContent='↓';if(title)title.textContent=appInstallText('Ready to install','جاهز للتثبيت');if(copy)copy.textContent=appInstallText('The native installation prompt is ready.','نافذة التثبيت الأصلية جاهزة.');button.disabled=false;button.textContent=appInstallText('Install on this device','تثبيت على هذا الجهاز');status.textContent=appInstallText('Tap the button to open the Android installation prompt.','اضغط الزر لفتح نافذة تثبيت Android.');return;}
       state.setAttribute('data-state','unavailable');if(icon)icon.textContent='•';if(title)title.textContent=appInstallText('Install options available','خيارات التثبيت متاحة');if(copy)copy.textContent=appIsSecureContext()?appInstallText('Use the browser menu if the native prompt is not offered yet.','استخدم قائمة المتصفح إذا لم تظهر نافذة التثبيت الأصلية بعد.'):appInstallText('This page must be served over HTTPS for app installation.','يجب تشغيل هذه الصفحة عبر HTTPS حتى يمكن تثبيت التطبيق.');button.disabled=false;button.textContent=appInstallText('Show install options','عرض خيارات التثبيت');status.textContent=appIsSecureContext()?appInstallText('Open the browser menu and choose “Install app” or “Add to Home screen”.','افتح قائمة المتصفح واختر «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية».'):appInstallText('Upload the complete package to an HTTPS website, then try again.','ارفع الحزمة كاملة إلى موقع يعمل عبر HTTPS ثم حاول مرة أخرى.'); 
     }
@@ -15295,6 +15325,27 @@
       });
     }
   })();
-</script>
+  </script>
+  <script>
+    /* Prompt installed clients to check the latest manifest/icon bundle. */
+    (function () {
+      if (!('serviceWorker' in navigator) || !/^https?:$/.test(window.location.protocol)) return;
+      function refreshInstalledApp() {
+        navigator.serviceWorker.getRegistration('./').then(function (registration) {
+          if (!registration) return;
+          return registration.update().then(function () {
+            if (registration.waiting) {
+              registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+          });
+        }).catch(function () {});
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', refreshInstalledApp, { once: true });
+      } else {
+        refreshInstalledApp();
+      }
+    })();
+  </script>
 </body>
 </html>
